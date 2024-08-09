@@ -7,32 +7,37 @@ on:
   pull_request:
     branches:
       - main
+
 jobs: 
- build-and-deploy:
-  runs-on: ubuntu-latest
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-  steps:
-  - name: Checkout respository
-    uses: actions/checkout@v2
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-  - name: Set up Node.js
-    uses: actions/setup-node@v2
-    with:
-      node-version: '14'
-  - name: install dependences with npm
-    run: npm install
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
 
-  - name: Run program
-    run: npm run build
-  - name: Dockerhub Login
-    uses: docker/login-action@v2
-    with:
-      username: ${{ secrets.DOCKER_HUB_USERNAME }}
-      password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-  - name: Build Docker image
-    run: docker build --no-cache . -t 0loynis0/loynispraktyki:latest
-  - name: Check docker images
-    run: docker images
-  - name: Push Docker image to Docker Hub
-    run: docker push 0loynis0/loynispraktyki:latest
-  
+    - name: Install dependencies with npm
+      run: npm install
+
+    - name: Run program
+      run: npm run build
+
+    - name: Dockerhub Login
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build Docker image
+      run: docker build --no-cache . -t 0loynis0/loynispraktyki:latest
+
+    - name: Check docker images
+      run: docker images
+
+    - name: Push Docker image to Docker Hub
+      run: docker push 0loynis0/loynispraktyki:latest
